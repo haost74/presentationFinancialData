@@ -1,0 +1,43 @@
+
+  <h2>Получить данные по mmrf</h2>
+  <form action="/register" method='post' name="registerForm">
+    <label for="uname">Дата от :</label>
+    <input type="datetime-local" name="userName" value="1992-01-01T00:00" size="40" id="mmtfFrom" >
+    <label for="uname">Дата до :</label>
+    <input type="datetime-local" name="userAge" value="1992-01-01T00:00" size="40" id="mmtfTo">
+    <input type="submit" value="Получить" onclick="clitBtn()">
+  </form>
+
+<plaintetx>hello</plaintetx>
+
+<script type="text/javascript">
+
+  //var val =  document.getElementById("mmtfFrom").value;
+  //alert(val);
+
+  function clitBtn(){
+    var text = document.getElementsByTagName("input")[0];
+    var text1 = document.getElementsByTagName("input")[1];
+    var val = text.value;
+    var val1 = text1.value;
+  };
+
+  $('form').submit(function(e){
+
+    e.preventDefault();
+            var registerForm = document.forms["registerForm"];
+            var userName = registerForm.elements["userName"].value;
+            var userAge = registerForm.elements["userAge"].value;
+
+            $.ajax({
+                type: "POST",
+                url: "/user",
+                data: JSON.stringify({From: userName, To: userAge}),
+                dataType: "json",
+                contentType: "application/json",
+                success: function(data, request){
+                    console.log(JSON.stringify(data));
+                    },
+                });
+  });
+</script>

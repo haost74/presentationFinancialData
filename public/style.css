@@ -1,0 +1,89 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background: #F8F9F9;
+}
+
+svg{
+  background: #D0D3D4;
+}
+
+rect {
+  /* не работает в IE */
+  transform: translate(140px, 105px)
+  scale(2 1.5)
+  translate(-140px, -105px);
+}
+
+object{
+  width: 100vw;
+}
+
+.button rect {
+  stroke: #999faa; /* navy 40% */
+  stroke-width: 2px;
+}
+
+.button rect.pressed {
+  fill: #000f2b; /* navy 100% */
+}
+
+.button #gradient-start {
+  stop-color: #999faa; /* navy 40% */
+  stop-opacity: 1;
+}
+
+.button #gradient-stop {
+  stop-color: #4d576b; /* navy 70% */
+  stop-opacity: 1;
+}
+
+.button #gradient-start.active, .button #gradient-start.pressed {
+  stop-color: #4d576b; /* navy 70% */
+}
+
+.button #gradient-stop.active, .button #gradient-stop.pressed {
+  stop-color: #000f2b; /* navy 100% */
+}
+
+.button text {
+  font-size: 30px;
+  fill: #eee;
+  pointer-events: none;
+  text-anchor: middle;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.mmrf{
+  display: block;
+  margin: 10px;
+}
+
+
+@media all{
+
+  .mainSvg{
+    width: 100vw;
+    height: 10vh;
+  }
+
+  rect{
+    width: 10vw;
+    height: 5vh;
+  }
+
+  .headerPage{
+    width: 100vw;
+  }
+}
+
+plaintetx {
+  width: inherit;
+  height: 100vh;
+  background: red;
+}
