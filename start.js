@@ -2,6 +2,9 @@ var express = require('express');
 var bobyParse = require('body-parser');
 var fortune = require('./lib/fortune.js');
 
+var async = require('async');
+var request = require('request'); //запрос на обновления страници
+
 //---------------------- save MongoDB --------------------
 
 var dateCB = require('./lib/saveMongodb.js');
@@ -37,12 +40,13 @@ app.post("/user", jsonParser, function (request, response) {
     if(!request.body) return response.sendStatus(400);
     console.log(request.body);
    var userName = os.userInfo().username;
+  var rt = JSON.stringify(cbrfdata.getMessage("1", parseString));
 
-  cbrfdata.getMessage("1", parseString);
-
-  //greeting.getMessage(userName);
-   response.json(JSON.stringify(request.body));
+   response.send(rt);//request.body);
 });
+
+
+
 
 app.get('/', function(req, res) {
 res.render('home');

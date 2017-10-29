@@ -24,20 +24,35 @@
 
   $('form').submit(function(e){
 
-    e.preventDefault();
+            e.preventDefault();
             var registerForm = document.forms["registerForm"];
             var userName = registerForm.elements["userName"].value;
             var userAge = registerForm.elements["userAge"].value;
 
-            $.ajax({
-                type: "POST",
-                url: "/user",
-                data: JSON.stringify({From: userName, To: userAge}),
-                dataType: "json",
-                contentType: "application/json",
-                success: function(data, request){
-                    console.log(JSON.stringify(data));
-                    },
+         $.ajax({
+           type: 'POST',
+           dataType: "json",
+           data: JSON.stringify({'From': userName, 'To': userAge}),
+           url: "/user",
+          contentType: "application/json",
+           success: function( response ) {
+              console.log( response );},
+              error:function(err){alert(err)}
+           //success: function(data){console.log(JSON.stringify(data));}
                 });
   });
+
+  function localJsonpCallback(json) {
+          if (!json.Error) {
+              $('#resultForm').submit();
+          }
+          else {
+
+              alert(json);
+          }
+      }
+
+function formpage(){
+  console.log("go");
+};
 </script>
