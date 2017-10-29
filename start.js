@@ -5,16 +5,14 @@ var fortune = require('./lib/fortune.js');
 //---------------------- save MongoDB --------------------
 
 var dateCB = require('./lib/saveMongodb.js');
-
-// ----------------------- request SBRF -----------------
-
 var parseString = require('xml2js').parseString;
 var fs = require('fs');
 var MongoClient = require("mongodb").MongoClient;
 
+// ----------------------- request SBRF -----------------
+
 var os = require("os");
 var cbrfdata = require("./cbrfdata");
-var greeting = require("./greeting");
 
 //-------------------------------------------------------
 
@@ -38,13 +36,9 @@ app.use(express.static(__dirname + '/public'));
 app.post("/user", jsonParser, function (request, response) {
     if(!request.body) return response.sendStatus(400);
     console.log(request.body);
-
-   //fortune: fortune.getFortune()
-
-   //requestsCBRF.getMmft("hello", "world");
    var userName = os.userInfo().username;
-  //console.log(greeting.getMessage(userName));
-  console.log(cbrfdata.getMessage("1", "2"));
+
+  cbrfdata.getMessage("1", parseString);
 
   //greeting.getMessage(userName);
    response.json(JSON.stringify(request.body));
