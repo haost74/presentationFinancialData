@@ -8,7 +8,7 @@
     <input type="submit" value="Получить" onclick="clitBtn()">
   </form>
 
-<plaintetx>hello</plaintetx>
+<plaintetx class="plai">hello</plaintetx>
 
 <script type="text/javascript">
 
@@ -36,21 +36,14 @@
            url: "/user",
           contentType: "application/json",
            success: function( response ) {
-              console.log( response );},
-              error:function(err){alert(err)}
+              var plai = $('.plai').text(JSON.stringify(response));
+
+              console.log( JSON.stringify(response) );},
+              error:function(err){console.log(err);}
            //success: function(data){console.log(JSON.stringify(data));}
                 });
   });
 
-  function localJsonpCallback(json) {
-          if (!json.Error) {
-              $('#resultForm').submit();
-          }
-          else {
-
-              alert(json);
-          }
-      }
 
 function formpage(){
   console.log("go");
