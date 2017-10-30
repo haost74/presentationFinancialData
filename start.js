@@ -38,7 +38,14 @@ app.use(express.static(__dirname + '/public'));
 
 app.post("/user", jsonParser, function (request, response) {
     if(!request.body) return response.sendStatus(400);
-    console.log(request.body);
+
+  var str = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><mrrf xmlns="http://web.cbr.ru/"><fromDate>'
+  + request.body.From + ':00' + '</fromDate><ToDate>'+ request.body.To + ':00' + '</ToDate></mrrf></Body></Envelope>';
+  //str = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><mrrf xmlns="http://web.cbr.ru/"><fromDate>2017-01-01T00:00:00</fromDate><ToDate>2017-12-31T00:00:00</ToDate></mrrf></Body></Envelope>';
+
+ //console.log(str);
+    console.log(request.body.From);
+    console.log(request.body.To);
    var userName = os.userInfo().username;
    var result = "";
   //var rt = JSON.stringify(cbrfdata.getMessage("1", parseString));
@@ -46,19 +53,22 @@ app.post("/user", jsonParser, function (request, response) {
     , Proxy = require('wcf.js').Proxy
     , binding = new BasicHttpBinding()
     , proxy = new Proxy(binding, "http://www.cbr.ru/DailyInfoWebServ/DailyInfo.asmx")
-    , message = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><mrrf xmlns="http://web.cbr.ru/"><fromDate>2017-01-01T00:00:00</fromDate><ToDate>2017-12-31T00:00:00</ToDate></mrrf></Body></Envelope>'
+    , message = str;//'<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><mrrf xmlns="http://web.cbr.ru/"><fromDate>2017-01-01T00:00:00</fromDate><ToDate>2017-12-31T00:00:00</ToDate></mrrf></Body></Envelope>'
 
-var rex = response;
-
+     var rex = response;
      proxy.send(message, "http://web.cbr.ru/mrrf", function(response, ctx) {
               var result =soap(response, rex);
-              console.log(result);
               });
 });
 
 function soap(response, rex){
   var rt;
 parseString(response, function(err, result){
+
+    if(err){
+      rex.send({msag:'Нет данных за выбранный период.'});
+      return;
+    };
 
    rt = JSON.stringify(result['soap:Envelope']['soap:Body']);
   //console.log(rt);
