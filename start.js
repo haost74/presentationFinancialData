@@ -56,6 +56,7 @@ app.post("/user", jsonParser, function (request, response) {
     , message = str;//'<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><mrrf xmlns="http://web.cbr.ru/"><fromDate>2017-01-01T00:00:00</fromDate><ToDate>2017-12-31T00:00:00</ToDate></mrrf></Body></Envelope>'
 
      var rex = response;
+
      proxy.send(message, "http://web.cbr.ru/mrrf", function(response, ctx) {
               var result =soap(response, rex);
               });
@@ -71,8 +72,15 @@ parseString(response, function(err, result){
     };
 
    rt = JSON.stringify(result['soap:Envelope']['soap:Body']);
-  //console.log(rt);
-  rex.send(result);
+   var par = JSON.parse(rt);
+   var obj = par[0]['mrrfResponse'];
+   var count = obj[0]['mrrfResult'][0]['diffgr:diffgram'][0]['mmrf'][0]['mr'].length;
+   var temps = obj[0]['mrrfResult'][0]['diffgr:diffgram'][0]['mmrf'][0]['mr'];
+   
+
+   cbrfdata.getMessage(temps);
+   rex.send(temps);
+
 });};
 
 
