@@ -19,7 +19,6 @@ function parseData(data, db){
 
     var nameParaneters = Object.getOwnPropertyNames(data[i]);
     var date = data[i][nameParaneters[1]][0];
-
     var mass = [
       data[i][nameParaneters[2]][0],
       data[i][nameParaneters[3]][0],
@@ -28,9 +27,10 @@ function parseData(data, db){
       data[i][nameParaneters[6]][0],
       data[i][nameParaneters[7]][0]
     ];
+    
+    for(var k = 0; k < mass.length; k++){
+      var item = {"date": date, "value":  mass[k]};
 
-    for(var k = 0; k < mass.length; ++k){
-      var item = {"date": date, "value":  mass[i]}
       var nameCollection;
 
       switch (k) {
@@ -60,6 +60,7 @@ function parseData(data, db){
 
       var collection = db.collection(nameCollection);
       collection.insert(item);
+      //console.log(item["date"] + " " + mass[i]);
       //setData(item, nameCollection);
     };
   };
