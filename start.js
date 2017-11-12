@@ -16,10 +16,9 @@ var MongoClient = require("mongodb").MongoClient;
 
 var os = require("os");
 var cbrfdata = require("./cbrfdata");
+var updatingData = require("./UpdatingData.js");
 
 //-------------------------------------------------------
-
-
 
 var app = express();
 
@@ -41,20 +40,14 @@ app.post("/user", jsonParser, function (request, response) {
 
   var str = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><mrrf xmlns="http://web.cbr.ru/"><fromDate>'
   + request.body.From + ':00' + '</fromDate><ToDate>'+ request.body.To + ':00' + '</ToDate></mrrf></Body></Envelope>';
-  //str = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><mrrf xmlns="http://web.cbr.ru/"><fromDate>2017-01-01T00:00:00</fromDate><ToDate>2017-12-31T00:00:00</ToDate></mrrf></Body></Envelope>';
 
- //console.log(str);
-    //console.log(request.body.From);
-    //console.log(request.body.To);
    var userName = os.userInfo().username;
    var result = "";
-  //var rt = JSON.stringify(cbrfdata.getMessage("1", parseString));
   var BasicHttpBinding =  require('wcf.js').BasicHttpBinding
     , Proxy = require('wcf.js').Proxy
     , binding = new BasicHttpBinding()
     , proxy = new Proxy(binding, "http://www.cbr.ru/DailyInfoWebServ/DailyInfo.asmx")
-    , message = str;//'<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><mrrf xmlns="http://web.cbr.ru/"><fromDate>2017-01-01T00:00:00</fromDate><ToDate>2017-12-31T00:00:00</ToDate></mrrf></Body></Envelope>'
-
+    , message = str;
      var rex = response;
 
      proxy.send(message, "http://web.cbr.ru/mrrf", function(response, ctx) {
@@ -76,16 +69,14 @@ parseString(response, function(err, result){
    var obj = par[0]['mrrfResponse'];
    var count = obj[0]['mrrfResult'][0]['diffgr:diffgram'][0]['mmrf'][0]['mr'].length;
    var temps = obj[0]['mrrfResult'][0]['diffgr:diffgram'][0]['mmrf'][0]['mr'];
-
-
    cbrfdata.getMessage(temps, "mrrf");
    rex.send(String(temps.length));
-
 });};
 
 
 app.get('/', function(req, res) {
 res.render('home');
+updatingData.getMessage();
 });
 
 app.get('/page', function(req, res){

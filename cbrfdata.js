@@ -3,6 +3,7 @@ var mongoClient = require("mongodb").MongoClient;
 
 var url = "mongodb://localhost:27017/datacb";
 
+//точка входа в расширяющий файл
 module.exports.getMessage = function(data, nameRequest){
     if(data.length == 0){  return;  };
 
@@ -14,6 +15,8 @@ module.exports.getMessage = function(data, nameRequest){
       });
 };
 
+//разбирает полученные данные и создает объект для сохранения в базу данных
+//сохраняет объект в mongodn
 function parseData(data, db){
   for(var i = 0; i < data.length; ++i){
 
@@ -27,7 +30,7 @@ function parseData(data, db){
       data[i][nameParaneters[6]][0],
       data[i][nameParaneters[7]][0]
     ];
-    
+
     for(var k = 0; k < mass.length; k++){
       var item = {"date": date, "value":  mass[k]};
 
@@ -60,27 +63,6 @@ function parseData(data, db){
 
       var collection = db.collection(nameCollection);
       collection.insert(item);
-      //console.log(item["date"] + " " + mass[i]);
-      //setData(item, nameCollection);
     };
   };
-};
-
-function setData(item, nameCollection){
-  mongoClient.connect(url, function(err, db){
-
-    if(db == null) {console.log(nameCollection + " " + err); return;}
-     try{
-      var collection = db.collection(nameCollection);
-
-      try{
-      collection.insert(item);
-    } catch(err){
-      console.log(err + " -- error --");
-    }
-  }catch(err){
-    console.log(nameCollection + " 85 " + err );
-  }
-      db.close();
-  });
 };
