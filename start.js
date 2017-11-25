@@ -40,7 +40,7 @@ app.post("/user", jsonParser, function (request, response) {
 
   var str = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><mrrf xmlns="http://web.cbr.ru/"><fromDate>'
   + request.body.From + ':00' + '</fromDate><ToDate>'+ request.body.To + ':00' + '</ToDate></mrrf></Body></Envelope>';
-
+//console.log(str);
    var userName = os.userInfo().username;
    var result = "";
   var BasicHttpBinding =  require('wcf.js').BasicHttpBinding
